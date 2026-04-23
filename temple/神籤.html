@@ -1,0 +1,2536 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>神籤 · Shén Qiān</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=Ma+Shan+Zheng&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:        #1a1512;
+    --ink-2:      #3a2a1e;
+    --paper:      #f4ead5;
+    --paper-2:    #ede0c4;
+    --paper-3:    #e4d2ad;
+    --cream:      #faf4e3;
+    --vermilion:  #a8251a;
+    --vermilion-2:#7d1814;
+    --cinnabar:   #c53030;
+    --gold:       #b8892b;
+    --gold-2:     #d4a845;
+    --gold-3:     #e8c878;
+    --jade:       #4a6b4a;
+    --brush:      #2b1d18;
+    --ash:        #8a7a64;
+    --seal:       #8a1a12;
+    --night:      #110a07;
+    --night-2:    #1f140e;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  html, body{
+    font-family:'Noto Sans TC', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  button{ font-family: inherit; cursor: pointer; border: none; background: none; color: inherit;}
+  a{ color: inherit; text-decoration: none; cursor: pointer;}
+  input, textarea{ font-family: inherit;}
+
+  /* ─── Top nav ─── */
+  .topnav{
+    display: flex; align-items: center;
+    padding: 18px 56px;
+    border-bottom: 1px solid rgba(168,37,26,.1);
+    position: sticky; top: 0;
+    z-index: 10;
+    background: rgba(250,244,227,.85);
+    backdrop-filter: blur(10px);
+  }
+  .topnav.dark{
+    background: rgba(17,10,7,.5);
+    border-bottom: 1px solid rgba(244,234,213,.08);
+  }
+  .topnav.dark .logo-txt{ color: var(--paper);}
+  .topnav.dark .logo-txt small{ color: rgba(244,234,213,.5);}
+  .topnav.dark .nav-links a{ color: rgba(244,234,213,.6);}
+  .topnav.dark .nav-links a.active{ color: var(--gold-2); border-color: var(--gold-2);}
+  .topnav.dark .search-ic{ background: rgba(244,234,213,.08); color: var(--paper);}
+
+  .logo{ display: flex; align-items: center; gap: 10px; cursor: pointer;}
+  .logo-seal{
+    width: 34px; height: 34px;
+    background: var(--vermilion);
+    color: var(--paper);
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 18px;
+    display:flex;align-items:center;justify-content:center;
+    transform: rotate(-3deg);
+  }
+  .logo-txt{
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: .1em;
+    font-size: 16px;
+  }
+  .logo-txt small{
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 10px;
+    color: var(--ash);
+    letter-spacing: .25em;
+    margin-top: 1px;
+  }
+  .nav-links{
+    display: flex; gap: 36px;
+    margin: 0 auto;
+  }
+  .nav-links a{
+    font-size: 12px;
+    color: var(--ink-2);
+    letter-spacing: .2em;
+    font-weight: 500;
+    padding: 4px 0;
+    border-bottom: 1px solid transparent;
+    transition: color .2s;
+  }
+  .nav-links a.active{
+    color: var(--vermilion);
+    border-bottom-color: var(--vermilion);
+  }
+  .nav-links a:hover{ color: var(--vermilion);}
+  .nav-right{ display: flex; align-items: center; gap: 14px;}
+  .search-ic{
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(168,37,26,.08);
+    color: var(--vermilion);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .avatar{
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--vermilion));
+    color: var(--paper);
+    font-family:'Ma Shan Zheng',serif;
+    font-size: 14px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* ─── Screen framework ─── */
+  .screen{ display: none; min-height: calc(100vh - 71px);}
+  .screen.active{ display: block;}
+  .light-bg{ background: var(--cream); position: relative;}
+  .light-bg::before{
+    content:'';
+    position: absolute; inset:0;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(139,98,48,.06) 0%, transparent 22%),
+      radial-gradient(circle at 85% 70%, rgba(139,98,48,.05) 0%, transparent 25%);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    opacity: .6;
+  }
+  .dark-bg{
+    min-height: calc(100vh - 71px);
+    background: radial-gradient(ellipse at center, var(--night-2) 0%, var(--night) 70%);
+    color: var(--paper);
+  }
+
+  /* ═════ 01 HOME ═════ */
+  .hero{
+    padding: 72px 72px 48px;
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 48px;
+    align-items: center;
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .kicker{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--vermilion);
+    letter-spacing: .4em;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .hero h1{
+    font-family: 'Noto Serif TC', serif;
+    font-size: 68px;
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: .08em;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .hero h1 .accent{
+    color: var(--vermilion);
+    position: relative;
+    display: inline-block;
+  }
+  .hero h1 .accent::after{
+    content:'';
+    position: absolute;
+    bottom: 4px; left: -6px; right: -6px;
+    height: 14px;
+    background: rgba(212,168,69,.35);
+    z-index: -1;
+  }
+  .hero p{
+    font-size: 15px;
+    color: var(--ink-2);
+    line-height: 1.9;
+    letter-spacing: .1em;
+    max-width: 460px;
+    margin-bottom: 32px;
+  }
+  .hero-visual{
+    position: relative;
+    height: 400px;
+  }
+  .hero-visual .big-char{
+    position: absolute;
+    inset: 0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 360px;
+    color: var(--vermilion);
+    line-height: 1;
+    opacity: .95;
+    text-shadow: 8px 8px 0 rgba(184,137,43,.2);
+  }
+  .hero-visual .stamp{
+    position: absolute;
+    width: 100px; height: 100px;
+    top: 40px; right: 20px;
+    background: var(--seal);
+    color: var(--paper);
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 44px;
+    display:flex;align-items:center;justify-content:center;
+    transform: rotate(-8deg);
+    box-shadow: 0 0 0 3px rgba(244,234,213,.6), 0 0 0 4px var(--seal);
+    letter-spacing: .05em;
+  }
+  .hero-visual .floating-ticket{
+    position: absolute;
+    bottom: 30px;
+    left: -10px;
+    background: #fff;
+    border: 1px solid rgba(168,37,26,.15);
+    padding: 14px 20px;
+    border-radius: 6px;
+    transform: rotate(-6deg);
+    font-family: 'Noto Serif TC', serif;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,.2);
+  }
+  .hero-visual .floating-ticket .rank{
+    font-size: 10px;
+    color: var(--vermilion);
+    letter-spacing: .3em;
+    margin-bottom: 4px;
+  }
+  .hero-visual .floating-ticket .num{
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 28px;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .categories{
+    padding: 40px 72px;
+    border-top: 1px solid rgba(168,37,26,.08);
+    border-bottom: 1px solid rgba(168,37,26,.08);
+    background: rgba(239,225,194,.3);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .cat-header{
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 24px;
+  }
+  .cat-header h2{
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    color: var(--ink);
+    letter-spacing: .25em;
+    font-weight: 600;
+  }
+  .cat-header h2 small{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--ash);
+    margin-left: 12px;
+    letter-spacing: .2em;
+  }
+  .cat-row{
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px;
+  }
+  .cat-chip{
+    background: #fff;
+    border: 1px solid rgba(168,37,26,.12);
+    border-radius: 10px;
+    padding: 16px 14px;
+    display: flex; align-items:center; gap: 10px;
+    transition: all .2s;
+    cursor: pointer;
+  }
+  .cat-chip:hover{ transform: translateY(-2px); box-shadow: 0 8px 20px -10px rgba(168,37,26,.25);}
+  .cat-chip .ic{
+    width: 36px; height: 36px;
+    background: rgba(168,37,26,.08);
+    color: var(--vermilion);
+    border-radius: 8px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 18px;
+  }
+  .cat-chip.active{
+    background: var(--vermilion);
+    border-color: var(--vermilion);
+    color: var(--paper);
+  }
+  .cat-chip.active .ic{
+    background: rgba(244,234,213,.2);
+    color: var(--paper);
+  }
+  .cat-chip .txt{
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .15em;
+  }
+  .cat-chip .txt small{
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 10px;
+    opacity: .6;
+    letter-spacing: .2em;
+    font-weight: 400;
+    margin-top: 1px;
+  }
+
+  .temple-section{
+    padding: 48px 72px 72px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .sec-head{
+    display: flex; align-items: baseline;
+    margin-bottom: 28px;
+    gap: 16px;
+  }
+  .sec-head h2{
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: .25em;
+    font-weight: 700;
+    display: flex; align-items:center; gap: 12px;
+  }
+  .sec-head h2::before{
+    content:'';
+    width: 4px; height: 22px;
+    background: var(--vermilion);
+  }
+  .sec-head .count{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ash);
+    letter-spacing: .2em;
+  }
+  .sec-head .view-all{
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--vermilion);
+    letter-spacing: .2em;
+    font-weight: 500;
+  }
+
+  .temple-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .temple-card{
+    background: #fff;
+    border: 1px solid rgba(168,37,26,.12);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all .25s;
+    cursor: pointer;
+  }
+  .temple-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -20px rgba(168,37,26,.3);
+  }
+  .temple-card .thumb{
+    height: 160px;
+    position: relative;
+    overflow: hidden;
+  }
+  .temple-card .thumb.t1{ background: linear-gradient(135deg, var(--vermilion), var(--vermilion-2));}
+  .temple-card .thumb.t2{ background: linear-gradient(135deg, var(--gold), #7a5e1e);}
+  .temple-card .thumb.t3{ background: linear-gradient(135deg, #4a6b4a, #2a402a);}
+  .temple-card .thumb.t4{ background: linear-gradient(135deg, #3a5878, #1e3550);}
+  .temple-card .thumb::after{
+    content:attr(data-char);
+    position: absolute; inset: 0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Ma Shan Zheng', serif;
+    color: rgba(244,234,213,.15);
+    font-size: 120px;
+  }
+  .temple-card .tag{
+    position: absolute;
+    top: 12px; left: 12px;
+    background: rgba(255,255,255,.95);
+    color: var(--vermilion);
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: .2em;
+    font-weight: 700;
+    z-index: 1;
+  }
+  .temple-card .heart{
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,.9);
+    border-radius: 50%;
+    display:flex;align-items:center;justify-content:center;
+    color: var(--vermilion);
+    z-index: 1;
+  }
+  .temple-card .content{ padding: 16px;}
+  .temple-card h4{
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    color: var(--ink);
+    letter-spacing: .08em;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .temple-card .location{
+    font-size: 11px;
+    color: var(--ash);
+    letter-spacing: .15em;
+    margin-bottom: 12px;
+  }
+  .temple-card .meta{
+    display: flex; align-items: center; gap: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(168,37,26,.1);
+  }
+  .temple-card .meta span{
+    font-size: 11px;
+    color: var(--ink-2);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .temple-card .meta svg{ width:12px; height:12px; color: var(--gold);}
+
+  /* ═════ 02 TEMPLE DETAIL ═════ */
+  .detail-hero{
+    height: 340px;
+    position: relative;
+    background: linear-gradient(135deg, var(--vermilion), var(--vermilion-2));
+    overflow: hidden;
+  }
+  .detail-hero::before{
+    content:'緣';
+    position: absolute;
+    top: -80px; right: -40px;
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 520px;
+    color: rgba(244,234,213,.08);
+    line-height: 1;
+  }
+  .detail-hero .breadcrumb{
+    position: absolute;
+    top: 24px; left: 72px;
+    font-size: 11px;
+    color: rgba(244,234,213,.7);
+    letter-spacing: .25em;
+    display: flex; gap: 8px; align-items:center;
+    cursor: pointer;
+  }
+  .detail-hero .breadcrumb a:hover{ color: var(--paper);}
+  .detail-hero .title-block{
+    position: absolute;
+    bottom: 40px; left: 72px; right: 72px;
+    color: var(--paper);
+  }
+  .detail-hero .eyebrow{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: .3em;
+    opacity: .8;
+    margin-bottom: 10px;
+  }
+  .detail-hero h1{
+    font-family:'Noto Serif TC', serif;
+    font-size: 60px;
+    letter-spacing: .12em;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .detail-hero .deity{
+    margin-top: 14px;
+    display: flex; gap: 10px;
+  }
+  .detail-hero .deity span{
+    padding: 5px 14px;
+    border: 1px solid rgba(244,234,213,.4);
+    border-radius: 20px;
+    font-size: 11px;
+    letter-spacing: .2em;
+  }
+  .detail-hero .big-stamp{
+    position: absolute;
+    top: 50px; right: 72px;
+    width: 120px; height: 120px;
+    background: var(--seal);
+    color: var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 50px;
+    transform: rotate(-6deg);
+    box-shadow: 0 0 0 3px rgba(244,234,213,.5), 0 0 0 4px var(--seal), 0 20px 40px rgba(0,0,0,.3);
+    letter-spacing: .08em;
+  }
+
+  .detail-body{
+    padding: 56px 72px;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 56px;
+  }
+  .detail-main h2{
+    font-family:'Noto Serif TC', serif;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: .2em;
+    margin-bottom: 22px;
+    font-weight: 700;
+    display: flex; align-items:center; gap: 12px;
+  }
+  .detail-main h2::before{
+    content:'';
+    width: 4px; height: 22px;
+    background: var(--vermilion);
+  }
+  .detail-main h2 small{
+    font-family:'Cormorant Garamond',serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ash);
+    font-weight: 400;
+    letter-spacing: .2em;
+  }
+  .steps{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .step{
+    background: rgba(239,225,194,.4);
+    border: 1px solid rgba(168,37,26,.1);
+    border-radius: 12px;
+    padding: 18px 16px;
+  }
+  .step .num{
+    font-family:'Cormorant Garamond',serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--vermilion);
+    line-height: 1;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .step h4{
+    font-family:'Noto Serif TC',serif;
+    font-size: 13px;
+    color: var(--ink);
+    letter-spacing: .15em;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .step p{
+    font-size: 11px;
+    color: var(--ink-2);
+    line-height: 1.7;
+    letter-spacing: .05em;
+  }
+  .detail-main p.intro{
+    font-size: 14px;
+    line-height: 2;
+    color: var(--ink-2);
+    letter-spacing: .1em;
+    margin-bottom: 14px;
+  }
+  .cta-row{
+    display: flex; gap: 12px;
+    margin-top: 32px;
+  }
+  .cta-primary{
+    background: var(--vermilion);
+    color: var(--paper);
+    padding: 16px 48px;
+    border-radius: 50px;
+    font-family:'Noto Serif TC', serif;
+    font-weight: 600;
+    letter-spacing: .4em;
+    font-size: 14px;
+    box-shadow: 0 4px 0 var(--vermilion-2);
+    text-indent: .4em;
+    transition: all .15s;
+  }
+  .cta-primary:hover{ transform: translateY(-1px); box-shadow: 0 5px 0 var(--vermilion-2);}
+  .cta-primary:active{ transform: translateY(2px); box-shadow: 0 2px 0 var(--vermilion-2);}
+  .cta-secondary{
+    background: transparent;
+    color: var(--vermilion);
+    padding: 16px 32px;
+    border: 1px solid var(--vermilion);
+    border-radius: 50px;
+    font-family:'Noto Serif TC', serif;
+    letter-spacing: .3em;
+    font-size: 13px;
+    text-indent: .3em;
+    transition: all .15s;
+  }
+  .cta-secondary:hover{ background: rgba(168,37,26,.05);}
+
+  .sidebar{ display: flex; flex-direction: column; gap: 20px; }
+  .info-card{
+    background: #fff;
+    border: 1px solid rgba(168,37,26,.12);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .info-card h3{
+    font-family:'Noto Serif TC', serif;
+    font-size: 14px;
+    color: var(--vermilion);
+    letter-spacing: .25em;
+    margin-bottom: 16px;
+    font-weight: 600;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed rgba(168,37,26,.15);
+  }
+  .info-card .row{
+    display: flex; justify-content: space-between;
+    font-size: 12px;
+    padding: 6px 0;
+    color: var(--ink-2);
+  }
+  .info-card .row span:first-child{
+    color: var(--ash);
+    letter-spacing: .15em;
+  }
+  .info-card .row span:last-child{
+    font-weight: 500;
+    letter-spacing: .05em;
+  }
+
+  /* ═════ 03 FORM (QUESTION ONLY) ═════ */
+  .form-wrap{
+    padding: 56px 72px 80px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .progress{
+    display: flex; align-items:center; gap: 12px;
+    margin-bottom: 44px;
+  }
+  .progress .p-step{
+    display: flex; align-items: center; gap: 10px;
+    color: var(--ash);
+    font-size: 11px;
+    letter-spacing: .2em;
+  }
+  .progress .p-step .c{
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 1px solid rgba(168,37,26,.25);
+    background: transparent;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Noto Serif TC', serif;
+    font-size: 12px;
+  }
+  .progress .p-step.done .c{
+    background: var(--vermilion);
+    color: var(--paper);
+    border-color: var(--vermilion);
+  }
+  .progress .p-step.active{ color: var(--vermilion); font-weight: 700;}
+  .progress .p-step.active .c{
+    background: var(--vermilion);
+    color: var(--paper);
+    border-color: var(--vermilion);
+  }
+  .progress .line{
+    flex: 1;
+    height: 1px;
+    background: rgba(168,37,26,.15);
+    max-width: 80px;
+  }
+
+  .prayer-banner{
+    text-align: center;
+    padding: 24px 0 32px;
+    border-bottom: 1px solid rgba(168,37,26,.12);
+    margin-bottom: 36px;
+  }
+  .prayer-banner .eyebrow{
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--vermilion);
+    letter-spacing: .4em;
+    margin-bottom: 12px;
+  }
+  .prayer-banner h2{
+    font-family: 'Noto Serif TC', serif;
+    font-size: 36px;
+    color: var(--ink);
+    letter-spacing: .25em;
+    font-weight: 600;
+    line-height: 1.4;
+    text-indent: .25em;
+  }
+  .prayer-banner p{
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--ash);
+    letter-spacing: .2em;
+    line-height: 1.9;
+  }
+
+  /* Silent recital card (replaces name/birthdate inputs) */
+  .silent-recite{
+    background: linear-gradient(135deg, rgba(168,37,26,.05), rgba(184,137,43,.05));
+    border: 1px dashed rgba(168,37,26,.25);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .silent-recite .icon{
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--vermilion);
+    color: var(--paper);
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 32px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(168,37,26,.25);
+  }
+  .silent-recite .text{}
+  .silent-recite .text h3{
+    font-family:'Noto Serif TC', serif;
+    font-size: 16px;
+    color: var(--vermilion);
+    letter-spacing: .25em;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .silent-recite .text p{
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.9;
+    letter-spacing: .08em;
+  }
+  .silent-recite .text p b{
+    color: var(--vermilion);
+    font-weight: 600;
+  }
+
+  .form-card{
+    background: #fff;
+    border: 1px solid rgba(168,37,26,.12);
+    border-radius: 16px;
+    padding: 36px 40px;
+    margin-bottom: 28px;
+  }
+  .field label{
+    display: block;
+    font-size: 11px;
+    color: var(--vermilion);
+    letter-spacing: .3em;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .field label .req{ color: var(--vermilion); margin-left: 4px;}
+  .field textarea{
+    width: 100%;
+    background: rgba(239,225,194,.3);
+    border: 1px solid rgba(168,37,26,.15);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 15px;
+    color: var(--ink);
+    outline: none;
+    min-height: 130px;
+    resize: vertical;
+    line-height: 1.9;
+    letter-spacing: .05em;
+    transition: all .2s;
+  }
+  .field textarea:focus{
+    background: #fff;
+    border-color: var(--vermilion);
+    box-shadow: 0 0 0 3px rgba(168,37,26,.1);
+  }
+  .counter{
+    display: flex; justify-content: space-between;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--ash);
+    letter-spacing: .15em;
+  }
+  .counter .warn{ color: var(--vermilion);}
+  .privacy{
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 14px 16px;
+    background: rgba(74,107,74,.08);
+    border: 1px solid rgba(74,107,74,.15);
+    border-radius: 10px;
+    margin-top: 22px;
+  }
+  .privacy svg{
+    width: 16px; height: 16px;
+    color: var(--jade);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .privacy .txt{
+    flex: 1;
+    font-size: 11px;
+    color: var(--ink-2);
+    line-height: 1.8;
+    letter-spacing: .1em;
+  }
+  .privacy .txt b{ color: var(--jade); letter-spacing: .2em;}
+
+  .form-footer{
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .back-btn{
+    color: var(--ash);
+    font-size: 12px;
+    letter-spacing: .25em;
+    display: flex; align-items: center; gap: 6px;
+    background: none; border: none;
+    transition: color .2s;
+  }
+  .back-btn:hover{ color: var(--vermilion);}
+  .next-btn{
+    background: var(--vermilion);
+    color: var(--paper);
+    padding: 14px 44px;
+    border-radius: 50px;
+    font-family:'Noto Serif TC', serif;
+    font-weight: 600;
+    letter-spacing: .35em;
+    font-size: 14px;
+    box-shadow: 0 4px 0 var(--vermilion-2);
+    text-indent: .35em;
+    transition: all .15s;
+  }
+  .next-btn:hover{ transform: translateY(-1px); box-shadow: 0 5px 0 var(--vermilion-2);}
+  .next-btn:active{ transform: translateY(2px); box-shadow: 0 2px 0 var(--vermilion-2);}
+  .next-btn:disabled{
+    background: var(--paper-3);
+    color: var(--ash);
+    box-shadow: 0 4px 0 var(--paper-3);
+    cursor: not-allowed;
+  }
+  .next-btn:disabled:hover{ transform: none; box-shadow: 0 4px 0 var(--paper-3);}
+
+  /* ═════ 04 CONFIRM ═════ */
+  .confirm-wrap{
+    padding: 80px 72px;
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .orbit{
+    position: relative;
+    width: 180px; height: 180px;
+    margin-bottom: 40px;
+  }
+  .orbit::before, .orbit::after{
+    content:'';
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    border: 1px dashed rgba(168,37,26,.25);
+    animation: spin 40s linear infinite;
+  }
+  .orbit::after{
+    inset: 18px;
+    border-style: solid;
+    border-color: rgba(168,37,26,.15);
+  }
+  @keyframes spin{ to{ transform: rotate(360deg);}}
+  .orbit .inner{
+    position: absolute; inset: 36px;
+    background: var(--vermilion);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--paper);
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 48px;
+    box-shadow: 0 0 0 4px rgba(244,234,213,.5), inset 0 0 0 2px rgba(255,255,255,.1);
+  }
+  .confirm-wrap .eyebrow{
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--vermilion);
+    letter-spacing: .4em;
+    margin-bottom: 12px;
+  }
+  .confirm-wrap h1{
+    font-family: 'Noto Serif TC', serif;
+    font-size: 48px;
+    color: var(--ink);
+    letter-spacing: .25em;
+    font-weight: 600;
+    margin-bottom: 14px;
+    text-indent: .25em;
+  }
+  .confirm-wrap .sub{
+    font-size: 13px;
+    color: var(--ink-2);
+    letter-spacing: .2em;
+    line-height: 1.9;
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+  .question-display{
+    width: 100%;
+    max-width: 540px;
+    background: rgba(168,37,26,.05);
+    border: 1px dashed rgba(168,37,26,.3);
+    border-radius: 14px;
+    padding: 28px 32px;
+    text-align: left;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .question-display::before{
+    content:'「';
+    position: absolute;
+    top: 6px; left: 14px;
+    font-family:'Noto Serif TC', serif;
+    font-size: 32px;
+    color: rgba(168,37,26,.3);
+  }
+  .question-display::after{
+    content:'」';
+    position: absolute;
+    bottom: 6px; right: 14px;
+    font-family:'Noto Serif TC', serif;
+    font-size: 32px;
+    color: rgba(168,37,26,.3);
+  }
+  .question-display .q-label{
+    font-size: 10px;
+    color: var(--vermilion);
+    letter-spacing: .3em;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .question-display p{
+    font-family:'Noto Serif TC', serif;
+    font-size: 17px;
+    color: var(--ink);
+    line-height: 1.8;
+    letter-spacing: .1em;
+  }
+  .confirm-btns{
+    display: flex; gap: 14px;
+  }
+  .btn-primary{
+    background: var(--vermilion);
+    color: var(--paper);
+    padding: 16px 52px;
+    border-radius: 50px;
+    font-family:'Noto Serif TC', serif;
+    font-weight: 600;
+    letter-spacing: .35em;
+    font-size: 14px;
+    box-shadow: 0 4px 0 var(--vermilion-2);
+    text-indent: .35em;
+    transition: all .15s;
+  }
+  .btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 5px 0 var(--vermilion-2);}
+  .btn-primary:active{ transform: translateY(2px); box-shadow: 0 2px 0 var(--vermilion-2);}
+  .btn-secondary{
+    background: transparent;
+    color: var(--vermilion);
+    padding: 16px 40px;
+    border: 1px solid var(--vermilion);
+    border-radius: 50px;
+    font-family:'Noto Serif TC', serif;
+    letter-spacing: .3em;
+    font-size: 13px;
+    text-indent: .3em;
+    transition: all .15s;
+  }
+  .btn-secondary:hover{ background: rgba(168,37,26,.05);}
+
+  /* ═════ 05 SHAKING ═════ */
+  .shake-scene{
+    padding: 40px 0 60px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+    position: relative;
+  }
+  .step-ind{
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--gold-2);
+    letter-spacing: .4em;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .shake-scene h1{
+    font-family:'Noto Serif TC', serif;
+    font-size: 44px;
+    letter-spacing: .3em;
+    margin-bottom: 14px;
+    color: var(--gold-3);
+    text-indent: .3em;
+  }
+  .shake-scene .hint{
+    font-size: 13px;
+    color: rgba(244,234,213,.6);
+    letter-spacing: .25em;
+    margin-bottom: 50px;
+  }
+  .bucket-wrap{
+    position: relative;
+    width: 220px;
+    height: 320px;
+    margin-bottom: 50px;
+  }
+  .bucket-wrap::before{
+    content:'';
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,168,69,.15), transparent 60%);
+    z-index: -1;
+  }
+  .bucket{
+    width: 100%; height: 100%;
+    position: relative;
+    transform-origin: bottom center;
+  }
+  .bucket.shaking{ animation: shakeDesk .35s infinite ease-in-out;}
+  @keyframes shakeDesk{
+    0%,100%{ transform: rotate(-6deg) translateY(0);}
+    50%{ transform: rotate(6deg) translateY(-6px);}
+  }
+  .bucket.reveal{
+    animation: popOut 1.2s ease-out forwards;
+  }
+  @keyframes popOut{
+    0%{ transform: rotate(0) translateY(0) scale(1);}
+    40%{ transform: rotate(-3deg) translateY(-20px) scale(1.02);}
+    100%{ transform: rotate(0) translateY(0) scale(1);}
+  }
+  .bucket-body{
+    position: absolute; bottom: 0;
+    width: 100%; height: 220px;
+    background: linear-gradient(180deg, var(--vermilion), var(--vermilion-2));
+    border-radius: 10px;
+    box-shadow:
+      inset 0 0 0 3px rgba(0,0,0,.25),
+      inset 0 8px 0 rgba(255,255,255,.08),
+      inset 0 -8px 0 rgba(0,0,0,.25),
+      0 20px 40px rgba(0,0,0,.5);
+  }
+  .bucket-body::after{
+    content:'籤';
+    position: absolute; inset:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Ma Shan Zheng',serif;
+    font-size: 88px;
+    color: var(--gold-3);
+  }
+  .sticks{
+    position: absolute;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 3px;
+  }
+  .sticks div{
+    width: 5px; height: 140px;
+    background: linear-gradient(to bottom, #f0e0b8, #c4a870 80%, #8a6b38);
+    border-radius: 1px;
+  }
+  .sticks div:nth-child(1){ height: 120px;}
+  .sticks div:nth-child(3){ height: 135px;}
+  .sticks div:nth-child(4){ height: 125px;}
+  .sticks div:nth-child(5){ height: 130px;}
+  .sticks div:nth-child(6){ height: 145px;}
+  .sticks div:nth-child(7){ height: 115px;}
+  .sticks div:nth-child(8){ height: 135px;}
+
+  /* Flying stick on reveal */
+  .chosen-stick{
+    position: absolute;
+    bottom: 200px;
+    left: 50%;
+    width: 16px; height: 260px;
+    background: linear-gradient(to bottom, #f8e8c0, #d4b478 70%, #8a6b38);
+    border-radius: 2px;
+    transform: translateX(-50%) rotate(0);
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    opacity: 0;
+    pointer-events: none;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 20px;
+  }
+  .chosen-stick .tip{
+    width: 18px; height: 60px;
+    background: var(--vermilion);
+    border-radius: 2px;
+    position: absolute;
+    bottom: 0;
+    display: flex; align-items: center; justify-content: center;
+    writing-mode: vertical-rl;
+    font-family: 'Ma Shan Zheng', serif;
+    color: var(--gold-3);
+    font-size: 11px;
+    letter-spacing: .1em;
+  }
+  .chosen-stick.show{
+    animation: stickRise 1.4s cubic-bezier(.22,.9,.3,1.2) forwards;
+  }
+  @keyframes stickRise{
+    0%{ opacity: 0; transform: translateX(-50%) translateY(60px) rotate(-4deg);}
+    30%{ opacity: 1;}
+    100%{ opacity: 1; transform: translateX(-50%) translateY(-80px) rotate(2deg);}
+  }
+
+  .stop-btn{
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--vermilion);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Noto Serif TC', serif;
+    font-size: 22px;
+    letter-spacing: .3em;
+    font-weight: 700;
+    box-shadow:
+      0 0 0 4px rgba(244,234,213,.3),
+      0 0 0 12px rgba(244,234,213,.1),
+      0 0 60px rgba(244,234,213,.2);
+    text-indent: .3em;
+    position: relative;
+    transition: transform .15s;
+  }
+  .stop-btn:hover{ transform: scale(1.04);}
+  .stop-btn:active{ transform: scale(.97);}
+  .stop-btn:disabled{ cursor: default; opacity: .4;}
+  .stop-btn::before{
+    content:'';
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    border: 1px dashed rgba(244,234,213,.3);
+    animation: spin 20s linear infinite;
+  }
+  .sub-hint{
+    margin-top: 28px;
+    font-size: 11px;
+    color: rgba(244,234,213,.4);
+    letter-spacing: .3em;
+    font-family:'Cormorant Garamond',serif;
+    font-style: italic;
+  }
+  .drawn-num{
+    margin-top: 22px;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--gold-3);
+    font-size: 18px;
+    letter-spacing: .3em;
+    opacity: 0;
+    transition: opacity .5s .6s;
+  }
+  .drawn-num.show{ opacity: 1;}
+  .drawn-num span{
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 32px;
+    color: var(--paper);
+    margin: 0 6px;
+  }
+
+  /* ═════ 06 POE (DIVINATION) ═════ */
+  .poe-scene{
+    padding: 40px 0 80px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+    position: relative;
+  }
+  .indicator{
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--gold-2);
+    letter-spacing: .4em;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .section-title{
+    font-family:'Noto Serif TC', serif;
+    font-size: 15px;
+    color: rgba(244,234,213,.6);
+    letter-spacing: .4em;
+    margin-bottom: 36px;
+    text-indent: .4em;
+  }
+  .poe-stones-big{
+    position: relative;
+    width: 420px;
+    height: 200px;
+    margin-bottom: 36px;
+  }
+  .poe-stones-big::before{
+    content:'';
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%,-50%);
+    width: 600px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(212,168,69,.15), transparent 55%);
+    z-index: -1;
+  }
+  .poe-stones-big .shadow{
+    position: absolute;
+    bottom: -10px; left: 50%;
+    transform: translateX(-50%);
+    width: 380px; height: 30px;
+    background: radial-gradient(ellipse, rgba(0,0,0,.5), transparent 70%);
+    filter: blur(4px);
+  }
+  .stone-flat{
+    width: 170px; height: 90px;
+    position: absolute;
+    border-radius: 50% 50% 6px 6px / 70% 70% 30% 30%;
+    background:
+      radial-gradient(ellipse at 30% 30%, #e65848, transparent 50%),
+      linear-gradient(180deg, #c53030, #8b1f1f);
+    box-shadow:
+      0 15px 30px rgba(0,0,0,.5),
+      inset 0 -8px 0 rgba(0,0,0,.2),
+      inset 0 2px 0 rgba(255,255,255,.15);
+  }
+  .stone-flat::after{
+    content:'';
+    position: absolute;
+    inset: 6px;
+    border-radius: inherit;
+    border: 1px solid rgba(244,234,213,.1);
+  }
+  .stone-dome{
+    width: 170px; height: 90px;
+    position: absolute;
+    border-radius: 55% 55% 50% 50% / 80% 80% 55% 55%;
+    background:
+      radial-gradient(ellipse at 40% 25%, #a42020, transparent 55%),
+      linear-gradient(180deg, #7d1814, #4a0e0c);
+    box-shadow:
+      0 15px 30px rgba(0,0,0,.6),
+      inset 0 -12px 0 rgba(0,0,0,.4),
+      inset 0 3px 0 rgba(255,255,255,.06);
+  }
+  .stone-dome::before{
+    content:'';
+    position: absolute;
+    top: 20%; left: 50%;
+    transform: translateX(-50%);
+    width: 60%; height: 30%;
+    background: radial-gradient(ellipse, rgba(255,255,255,.1), transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* Layouts for each result */
+  .poe-result.sheng .stone-flat{ left: 30px; top: 40px; transform: rotate(-8deg);}
+  .poe-result.sheng .stone-dome{ right: 30px; top: 40px; transform: rotate(10deg);}
+  .poe-result.xiao .stone-flat:nth-of-type(1){ left: 30px; top: 40px; transform: rotate(-12deg);}
+  .poe-result.xiao .stone-flat:nth-of-type(2){ right: 30px; top: 40px; transform: rotate(14deg);}
+  .poe-result.yin .stone-dome:nth-of-type(1){ left: 30px; top: 40px; transform: rotate(-12deg);}
+  .poe-result.yin .stone-dome:nth-of-type(2){ right: 30px; top: 40px; transform: rotate(14deg);}
+
+  /* Toss animation */
+  .poe-stones-big.tossing .stone-flat,
+  .poe-stones-big.tossing .stone-dome{
+    animation: tossCoin 1.2s ease-in-out;
+  }
+  @keyframes tossCoin{
+    0%{ transform: translateY(0) rotate(0);}
+    40%{ transform: translateY(-200px) rotate(540deg);}
+    70%{ transform: translateY(-100px) rotate(900deg);}
+    100%{ transform: translateY(0) rotate(var(--end-rotate, 0deg));}
+  }
+
+  .poe-title-big{
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 80px;
+    letter-spacing: .15em;
+    line-height: 1;
+    margin-bottom: 16px;
+    text-indent: .15em;
+  }
+  .poe-result.sheng .poe-title-big{
+    color: var(--gold-3);
+    text-shadow:
+      0 0 40px rgba(232,200,120,.5),
+      0 0 80px rgba(232,200,120,.3);
+  }
+  .poe-result.xiao .poe-title-big{
+    color: #e0824a;
+    text-shadow: 0 0 30px rgba(224,130,74,.35);
+  }
+  .poe-result.yin .poe-title-big{
+    color: #6a7a8e;
+    text-shadow: 0 0 30px rgba(106,122,142,.35);
+  }
+  .poe-desc{
+    font-family:'Noto Serif TC', serif;
+    font-size: 16px;
+    color: rgba(244,234,213,.75);
+    letter-spacing: .25em;
+    line-height: 1.9;
+    max-width: 560px;
+    margin-bottom: 36px;
+    text-indent: .25em;
+  }
+  .poe-actions{
+    display: flex; gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .poe-btn{
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-family:'Noto Serif TC', serif;
+    letter-spacing: .3em;
+    font-size: 13px;
+    font-weight: 600;
+    text-indent: .3em;
+    transition: all .15s;
+  }
+  .poe-btn-primary{
+    background: var(--gold-2);
+    color: var(--ink);
+    box-shadow: 0 4px 0 rgba(0,0,0,.3);
+  }
+  .poe-btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 5px 0 rgba(0,0,0,.3);}
+  .poe-btn-primary:active{ transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,.3);}
+  .poe-btn-secondary{
+    background: transparent;
+    color: var(--paper);
+    border: 1px solid rgba(244,234,213,.4);
+  }
+  .poe-btn-secondary:hover{ background: rgba(244,234,213,.06);}
+  .poe-btn-danger{
+    background: transparent;
+    color: #e0824a;
+    border: 1px solid #e0824a;
+  }
+  .poe-btn-danger:hover{ background: rgba(224,130,74,.08);}
+
+  .poe-note{
+    margin-top: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(244,234,213,.05);
+    border: 1px solid rgba(244,234,213,.1);
+    border-radius: 40px;
+    font-size: 11px;
+    letter-spacing: .2em;
+    color: rgba(244,234,213,.5);
+  }
+  .poe-note svg{ width: 12px; height: 12px;}
+  .attempt-counter{
+    position: absolute;
+    top: 20px; right: 0;
+    background: rgba(244,234,213,.05);
+    border: 1px solid rgba(244,234,213,.15);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: rgba(244,234,213,.6);
+    letter-spacing: .2em;
+  }
+
+  .poe-loading{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: rgba(244,234,213,.6);
+    letter-spacing: .4em;
+    font-size: 16px;
+    margin-top: 20px;
+    animation: pulse 1.4s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity: .4;}
+    50%{ opacity: 1;}
+  }
+
+  /* ═════ 07 RESULT ═════ */
+  .result-body{
+    padding: 56px 72px 80px;
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 460px 1fr;
+    gap: 56px;
+  }
+  .poem-side{ position: relative; }
+  .poem-header{ text-align: center; margin-bottom: 26px;}
+  .poem-header .rank-tag{
+    display: inline-block;
+    padding: 4px 16px;
+    background: var(--vermilion);
+    color: var(--paper);
+    font-family:'Noto Serif TC', serif;
+    font-size: 11px;
+    letter-spacing: .35em;
+    font-weight: 700;
+    margin-bottom: 14px;
+    text-indent: .35em;
+  }
+  .poem-header h1{
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 56px;
+    color: var(--vermilion);
+    line-height: 1;
+    letter-spacing: .15em;
+    margin-bottom: 6px;
+  }
+  .poem-header .en{
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ash);
+    letter-spacing: .3em;
+  }
+  .poem-paper{
+    background:
+      linear-gradient(180deg, rgba(139,98,48,.04), rgba(139,98,48,.1)),
+      #faf4e3;
+    border: 1px solid rgba(168,37,26,.15);
+    border-radius: 14px;
+    padding: 36px;
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    position: relative;
+    min-height: 360px;
+    box-shadow: inset 0 0 40px rgba(139,98,48,.08);
+  }
+  .poem-paper::before, .poem-paper::after{
+    content:'';
+    position: absolute;
+    width: 22px; height: 22px;
+  }
+  .poem-paper::before{
+    top: 12px; left: 12px;
+    border-top: 2px solid var(--vermilion);
+    border-left: 2px solid var(--vermilion);
+  }
+  .poem-paper::after{
+    bottom: 12px; right: 12px;
+    border-bottom: 2px solid var(--vermilion);
+    border-right: 2px solid var(--vermilion);
+  }
+  .poem-line{
+    writing-mode: vertical-rl;
+    font-family:'Noto Serif TC', serif;
+    font-size: 26px;
+    letter-spacing: .4em;
+    color: var(--brush);
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  .poem-stamp{
+    position: absolute;
+    bottom: 44px; left: 44px;
+    width: 54px; height: 54px;
+    background: var(--seal);
+    color: var(--paper);
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 22px;
+    display:flex; align-items:center; justify-content:center;
+    transform: rotate(-8deg);
+    box-shadow: 0 0 0 2px rgba(244,234,213,.8), 0 0 0 3px var(--seal);
+  }
+  .poem-number{
+    position: absolute;
+    top: 20px; right: 20px;
+    writing-mode: vertical-rl;
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 18px;
+    color: var(--ash);
+    letter-spacing: .3em;
+  }
+
+  .interp-side{ display: flex; flex-direction: column; }
+  .interp-header h2{
+    font-family:'Noto Serif TC', serif;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: .25em;
+    font-weight: 700;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 6px;
+  }
+  .interp-header h2::before{
+    content:'';
+    width: 4px; height: 22px;
+    background: var(--vermilion);
+  }
+  .interp-header p{
+    font-size: 12px;
+    color: var(--ash);
+    letter-spacing: .2em;
+    margin-bottom: 24px;
+    margin-left: 16px;
+  }
+
+  .asked-q{
+    background: rgba(168,37,26,.05);
+    border: 1px dashed rgba(168,37,26,.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.8;
+    letter-spacing: .05em;
+  }
+  .asked-q b{
+    color: var(--vermilion);
+    letter-spacing: .25em;
+    font-weight: 700;
+    margin-right: 10px;
+    font-size: 11px;
+  }
+
+  .summary-card{
+    background: linear-gradient(135deg, var(--vermilion), var(--vermilion-2));
+    color: var(--paper);
+    padding: 26px;
+    border-radius: 14px;
+    margin-bottom: 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary-card::before{
+    content:attr(data-char);
+    position: absolute;
+    top: -30px; right: -10px;
+    font-family:'Ma Shan Zheng', serif;
+    font-size: 180px;
+    color: rgba(244,234,213,.08);
+    line-height: 1;
+  }
+  .summary-card .tag{
+    display: inline-block;
+    padding: 3px 10px;
+    background: rgba(244,234,213,.2);
+    border-radius: 20px;
+    font-size: 10px;
+    letter-spacing: .25em;
+    margin-bottom: 10px;
+  }
+  .summary-card h3{
+    font-family:'Noto Serif TC', serif;
+    font-size: 19px;
+    letter-spacing: .15em;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .summary-card p{
+    font-size: 13px;
+    line-height: 1.9;
+    letter-spacing: .1em;
+    opacity: .95;
+    position: relative;
+    z-index: 1;
+  }
+
+  .interp-tabs{
+    display: flex; gap: 6px;
+    margin-bottom: 14px;
+  }
+  .interp-tab{
+    padding: 8px 14px;
+    background: rgba(239,225,194,.4);
+    border: 1px solid rgba(168,37,26,.1);
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--ink-2);
+    letter-spacing: .2em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .interp-tab.active{
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .interp-list{
+    background: #fff;
+    border: 1px solid rgba(168,37,26,.12);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .interp-item{
+    padding: 14px 18px;
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    border-top: 1px dashed rgba(168,37,26,.1);
+  }
+  .interp-item:first-child{ border-top: none;}
+  .interp-item .cat{
+    font-family:'Noto Serif TC', serif;
+    font-size: 13px;
+    color: var(--ink);
+    letter-spacing: .2em;
+    font-weight: 600;
+  }
+  .interp-item .desc{
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.7;
+    letter-spacing: .05em;
+  }
+  .interp-item .verdict{
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    letter-spacing: .2em;
+    font-weight: 700;
+    text-align: center;
+    min-width: 48px;
+  }
+  .verdict.good{ background: rgba(74,107,74,.15); color: var(--jade);}
+  .verdict.mid{ background: rgba(184,137,43,.15); color: var(--gold);}
+  .verdict.bad{ background: rgba(168,37,26,.15); color: var(--vermilion);}
+
+  .plain-text{
+    padding: 18px;
+    background: rgba(239,225,194,.3);
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink-2);
+    letter-spacing: .08em;
+  }
+
+  .result-footer{
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px dashed rgba(168,37,26,.15);
+    display: flex; gap: 10px; align-items: center;
+  }
+  .icon-btn-sq{
+    width: 42px; height: 42px;
+    background: rgba(168,37,26,.08);
+    color: var(--vermilion);
+    border-radius: 10px;
+    display:flex;align-items:center;justify-content:center;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .icon-btn-sq:hover{ background: rgba(168,37,26,.15);}
+
+  /* ─── Toast ─── */
+  .toast{
+    position: fixed;
+    top: 80px; left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-size: 13px;
+    letter-spacing: .15em;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .3s;
+    z-index: 100;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+  }
+  .toast.show{
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ─── Transition fade ─── */
+  .screen.active{ animation: fadeIn .4s ease-out;}
+  @keyframes fadeIn{
+    from{ opacity: 0; transform: translateY(10px);}
+    to{ opacity: 1; transform: translateY(0);}
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 900px){
+    .topnav{ padding: 14px 20px;}
+    .nav-links{ display: none;}
+    .hero{ grid-template-columns: 1fr; padding: 40px 24px 24px;}
+    .hero h1{ font-size: 44px;}
+    .hero-visual{ height: 260px;}
+    .hero-visual .big-char{ font-size: 220px;}
+    .categories{ padding: 32px 24px;}
+    .cat-row{ grid-template-columns: repeat(2, 1fr);}
+    .temple-section{ padding: 32px 24px 60px;}
+    .temple-grid{ grid-template-columns: repeat(2, 1fr);}
+    .detail-hero{ height: 280px;}
+    .detail-hero .breadcrumb, .detail-hero .title-block{ left: 24px; right: 24px;}
+    .detail-hero .big-stamp{ right: 24px; top: 24px; width: 80px; height: 80px; font-size: 34px;}
+    .detail-hero h1{ font-size: 40px;}
+    .detail-body{ grid-template-columns: 1fr; padding: 32px 24px; gap: 28px;}
+    .steps{ grid-template-columns: repeat(2, 1fr);}
+    .form-wrap{ padding: 32px 20px 60px;}
+    .progress{ gap: 6px; font-size: 10px;}
+    .progress .p-step .c{ width: 22px; height: 22px;}
+    .progress .line{ max-width: 20px;}
+    .prayer-banner h2{ font-size: 26px;}
+    .silent-recite{ flex-direction: column; text-align: center; padding: 24px;}
+    .form-card{ padding: 24px;}
+    .confirm-wrap{ padding: 40px 24px;}
+    .confirm-wrap h1{ font-size: 36px;}
+    .result-body{ grid-template-columns: 1fr; padding: 32px 24px 60px; gap: 32px;}
+    .poem-paper{ padding: 24px; gap: 18px;}
+    .poem-line{ font-size: 22px;}
+    .bucket-wrap{ transform: scale(.85);}
+    .poe-stones-big{ transform: scale(.75);}
+    .poe-title-big{ font-size: 60px;}
+    .attempt-counter{ right: 20px;}
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ═════════ GLOBAL NAV ═════════ -->
+<nav class="topnav" id="topnav">
+  <div class="logo" onclick="go('home')">
+    <div class="logo-seal">籤</div>
+    <div class="logo-txt">神籤<small>SHEN QIAN</small></div>
+  </div>
+  <div class="nav-links">
+    <a id="nav-home" onclick="go('home')">首頁</a>
+    <a id="nav-temple" onclick="go('detail')">廟宇</a>
+    <a id="nav-draw" onclick="startDraw()">抽籤</a>
+    <a id="nav-poem">籤詩庫</a>
+  </div>
+  <div class="nav-right">
+    <div class="search-ic">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    </div>
+    <div class="avatar">明</div>
+  </div>
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<!-- ═════════ 01 HOME ═════════ -->
+<div id="screen-home" class="screen active light-bg">
+  <div class="hero">
+    <div>
+      <div class="kicker">Divine Fortune · Since 1856</div>
+      <h1>誠心一念<br>神明<span class="accent">指引</span>方向</h1>
+      <p>千年古老智慧，一籤指引人生。透過網頁虔心求籤問神，聆聽天意，安頓此心。</p>
+      <button class="cta-primary" onclick="startDraw()">開始求籤</button>
+    </div>
+    <div class="hero-visual">
+      <div class="big-char">籤</div>
+      <div class="stamp">緣</div>
+      <div class="floating-ticket">
+        <div class="rank">第 三十八 籤</div>
+        <div class="num">上吉</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="categories">
+    <div class="cat-header">
+      <h2>所求類別 <small>Categories</small></h2>
+    </div>
+    <div class="cat-row">
+      <div class="cat-chip active"><div class="ic">緣</div><div class="txt">姻緣<small>LOVE</small></div></div>
+      <div class="cat-chip"><div class="ic">業</div><div class="txt">事業<small>CAREER</small></div></div>
+      <div class="cat-chip"><div class="ic">財</div><div class="txt">財運<small>WEALTH</small></div></div>
+      <div class="cat-chip"><div class="ic">學</div><div class="txt">學業<small>STUDY</small></div></div>
+      <div class="cat-chip"><div class="ic">健</div><div class="txt">健康<small>HEALTH</small></div></div>
+      <div class="cat-chip"><div class="ic">運</div><div class="txt">流年<small>FATE</small></div></div>
+    </div>
+  </div>
+
+  <div class="temple-section">
+    <div class="sec-head">
+      <h2>熱門廟宇 <span class="count">— 04 selected</span></h2>
+      <a class="view-all">查看全部 →</a>
+    </div>
+    <div class="temple-grid">
+      <div class="temple-card" onclick="go('detail')">
+        <div class="thumb t1" data-char="城">
+          <div class="tag">月老靈驗</div>
+          <div class="heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/></svg></div>
+        </div>
+        <div class="content">
+          <h4>霞海城隍廟</h4>
+          <div class="location">TAIPEI · 大稻埕</div>
+          <div class="meta">
+            <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.9l-6.2 4.4 2.4-7.4L2 9.4h7.6z"/></svg> 4.8</span>
+            <span>百首靈籤</span>
+          </div>
+        </div>
+      </div>
+      <div class="temple-card" onclick="showToast('示範版僅收錄霞海城隍廟 ·')">
+        <div class="thumb t2" data-char="龍">
+          <div class="tag">百年古剎</div>
+          <div class="heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/></svg></div>
+        </div>
+        <div class="content">
+          <h4>龍山寺</h4>
+          <div class="location">TAIPEI · 萬華</div>
+          <div class="meta">
+            <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.9l-6.2 4.4 2.4-7.4L2 9.4h7.6z"/></svg> 4.9</span>
+            <span>觀音百籤</span>
+          </div>
+        </div>
+      </div>
+      <div class="temple-card" onclick="showToast('示範版僅收錄霞海城隍廟 ·')">
+        <div class="thumb t3" data-char="行">
+          <div class="tag">商業財運</div>
+          <div class="heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/></svg></div>
+        </div>
+        <div class="content">
+          <h4>行天宮</h4>
+          <div class="location">TAIPEI · 中山</div>
+          <div class="meta">
+            <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.9l-6.2 4.4 2.4-7.4L2 9.4h7.6z"/></svg> 4.7</span>
+            <span>關帝六十籤</span>
+          </div>
+        </div>
+      </div>
+      <div class="temple-card" onclick="showToast('示範版僅收錄霞海城隍廟 ·')">
+        <div class="thumb t4" data-char="媽">
+          <div class="tag">海運平安</div>
+          <div class="heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/></svg></div>
+        </div>
+        <div class="content">
+          <h4>松山慈祐宮</h4>
+          <div class="location">TAIPEI · 松山</div>
+          <div class="meta">
+            <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.9l-6.2 4.4 2.4-7.4L2 9.4h7.6z"/></svg> 4.6</span>
+            <span>媽祖百籤</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════ 02 TEMPLE DETAIL ═════════ -->
+<div id="screen-detail" class="screen light-bg">
+  <div class="detail-hero">
+    <div class="breadcrumb"><a onclick="go('home')">首頁</a> <span>/</span> <a onclick="go('home')">廟宇</a> <span>/</span> 霞海城隍廟</div>
+    <div class="big-stamp">緣</div>
+    <div class="title-block">
+      <div class="eyebrow">TAIPEI · DADAOCHENG · EST. 1856</div>
+      <h1>霞海城隍廟</h1>
+      <div class="deity">
+        <span>城隍爺</span>
+        <span>月下老人</span>
+        <span>義勇公</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-body">
+    <div class="detail-main">
+      <h2>抽籤說明 <small>Ritual Steps</small></h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">01</div>
+          <h4>誠心上香</h4>
+          <p>向城隍爺與月下老人稟告來意，心存敬意。</p>
+        </div>
+        <div class="step">
+          <div class="num">02</div>
+          <h4>默念三事</h4>
+          <p>於心中默念姓名、生辰與所求，神明已知。</p>
+        </div>
+        <div class="step">
+          <div class="num">03</div>
+          <h4>搖動籤筒</h4>
+          <p>虔心搖動籤筒，待一籤自然躍出，即為主籤。</p>
+        </div>
+        <div class="step">
+          <div class="num">04</div>
+          <h4>擲筊請示</h4>
+          <p>以筊杯請示神明，聖筊即應允，否則重新求取。</p>
+        </div>
+      </div>
+      <p class="intro">
+        霞海城隍廟位於台北大稻埕迪化街，創建於清咸豐六年（1856），主祀城隍爺。廟內所奉之月下老人尤為靈驗，為台北求姻緣之首選廟宇。
+      </p>
+      <p class="intro">
+        信眾若心有所困，可於神前誠心默念所問之事，搖籤問神並以擲筊請示。神明將透過籤詩為您指引方向。
+      </p>
+      <div class="cta-row">
+        <button class="cta-primary" onclick="startDraw()">開始求籤</button>
+        <button class="cta-secondary" onclick="showToast('已收藏此廟 ♥')">收藏此廟</button>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="info-card">
+        <h3>廟宇資訊 · INFO</h3>
+        <div class="row"><span>地址</span><span>迪化街一段 61 號</span></div>
+        <div class="row"><span>開放時間</span><span>06:16 – 19:47</span></div>
+        <div class="row"><span>籤詩總數</span><span>100 首</span></div>
+        <div class="row"><span>籤詩類型</span><span>百首靈籤</span></div>
+        <div class="row"><span>適合所求</span><span>姻緣 · 事業 · 其他</span></div>
+      </div>
+      <div class="info-card">
+        <h3>擲筊規則 · RULES</h3>
+        <div class="row"><span>聖筊</span><span>一平一凸 · 應允</span></div>
+        <div class="row"><span>笑筊</span><span>兩平朝上 · 再問</span></div>
+        <div class="row"><span>沒筊</span><span>兩凸朝上 · 不允</span></div>
+        <div class="row"><span>擲筊上限</span><span>3 次</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════ 03 FORM (QUESTION ONLY) ═════════ -->
+<div id="screen-form" class="screen light-bg">
+  <div class="form-wrap">
+    <div class="progress">
+      <div class="p-step done"><span class="c">✓</span>選擇廟宇</div>
+      <div class="line"></div>
+      <div class="p-step active"><span class="c">2</span>誠心稟告</div>
+      <div class="line"></div>
+      <div class="p-step"><span class="c">3</span>搖籤擲筊</div>
+      <div class="line"></div>
+      <div class="p-step"><span class="c">4</span>解籤</div>
+    </div>
+
+    <div class="prayer-banner">
+      <div class="eyebrow">STEP 02 · PRAYER</div>
+      <h2>請於心中默念<br>姓名 · 生辰</h2>
+      <p>靜心片刻 · 深呼吸三次<br>於心中向神明報上您的姓名與生辰，神明自知</p>
+    </div>
+
+    <div class="silent-recite">
+      <div class="icon">默</div>
+      <div class="text">
+        <h3>心中默念 · 無需輸入</h3>
+        <p>
+          請閉上雙眼，於心中默念：<b>弟子（姓名）某某某，農曆（生辰）某年某月某日生，今日於霞海城隍廟前誠心請示。</b><br>
+          神明聽見心聲，勿須於此處輸入個人資料。
+        </p>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="field">
+        <label>您想請示神明的問題 <span class="req">*</span></label>
+        <textarea id="question-input" placeholder="請具體描述您想請示之事，越清晰則籤詩指引越精準 ⋯⋯" maxlength="200"></textarea>
+        <div class="counter">
+          <span>例：我與心儀對象的緣分走向，是否能修成正果？</span>
+          <span id="char-count">0 / 200</span>
+        </div>
+      </div>
+      <div class="privacy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <div class="txt">
+          <b>隱私保證 — </b>您輸入的問題僅於本次求籤使用，不會上傳伺服器、不會儲存，關閉頁面後即清除。
+        </div>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button class="back-btn" onclick="go('detail')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+        返回廟宇頁
+      </button>
+      <button class="next-btn" id="next-btn" onclick="submitQuestion()" disabled>下一步 · 確認</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════ 04 CONFIRM ═════════ -->
+<div id="screen-confirm" class="screen light-bg">
+  <div class="confirm-wrap">
+    <div class="orbit">
+      <div class="inner">心</div>
+    </div>
+    <div class="eyebrow">READY · FINAL STEP</div>
+    <h1>準備好了嗎</h1>
+    <div class="sub">請先靜心 · 深呼吸三次<br>確認您的問題後，即可開始搖籤</div>
+    <div class="question-display">
+      <div class="q-label">您稟告之事</div>
+      <p id="confirm-question">—</p>
+    </div>
+    <div class="confirm-btns">
+      <button class="btn-secondary" onclick="go('form')">修改內容</button>
+      <button class="btn-primary" onclick="go('shake')">開始抽籤</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════ 05 SHAKING ═════════ -->
+<div id="screen-shake" class="screen dark-bg">
+  <div class="shake-scene">
+    <div class="step-ind">STEP 03 · DRAWING</div>
+    <h1>誠 心 求 籤</h1>
+    <div class="hint">心中默念所求之事 · 點擊 STOP 抽取籤號</div>
+    <div class="bucket-wrap">
+      <div class="bucket shaking" id="bucket">
+        <div class="sticks">
+          <div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div>
+        </div>
+        <div class="bucket-body"></div>
+      </div>
+      <div class="chosen-stick" id="chosen-stick">
+        <div class="tip" id="stick-tip">第—籤</div>
+      </div>
+    </div>
+    <button class="stop-btn" id="stop-btn" onclick="stopShake()">STOP</button>
+    <div class="sub-hint" id="shake-hint">TAP TO RECEIVE YOUR FORTUNE</div>
+    <div class="drawn-num" id="drawn-num">抽得 <span id="drawn-num-txt">第—籤</span> · 即將擲筊</div>
+  </div>
+</div>
+
+<!-- ═════════ 06 POE ═════════ -->
+<div id="screen-poe" class="screen dark-bg">
+  <div class="poe-scene">
+    <div class="attempt-counter" id="attempt-counter">擲筊 · 1 / 3</div>
+    <div class="indicator">STEP 04 · DIVINATION</div>
+    <div class="section-title" id="poe-section-title">擲 筊 中</div>
+    <div class="poe-stones-big" id="poe-stones">
+      <!-- populated by JS -->
+      <div class="shadow"></div>
+    </div>
+    <div class="poe-title-big" id="poe-title">—</div>
+    <div class="poe-desc" id="poe-desc">神明靜聽 · 擲筊請示中</div>
+    <div class="poe-actions" id="poe-actions"></div>
+    <div class="poe-note" id="poe-note" style="display:none"></div>
+  </div>
+</div>
+
+<!-- ═════════ 07 RESULT ═════════ -->
+<div id="screen-result" class="screen light-bg">
+  <div class="result-body">
+    <div class="poem-side">
+      <div class="poem-header">
+        <div class="rank-tag" id="rank-tag">上 吉</div>
+        <h1 id="poem-num-zh">第 三十八 籤</h1>
+        <div class="en" id="poem-num-en">No. 38 · SHÀNG JÍ</div>
+      </div>
+      <div class="poem-paper">
+        <div class="poem-number" id="poem-num-vert">第三十八</div>
+        <div class="poem-line" id="poem-l1"></div>
+        <div class="poem-line" id="poem-l2"></div>
+        <div class="poem-line" id="poem-l3"></div>
+        <div class="poem-line" id="poem-l4"></div>
+        <div class="poem-stamp">籤</div>
+      </div>
+    </div>
+
+    <div class="interp-side">
+      <div class="interp-header">
+        <h2>籤詩解讀</h2>
+        <p>INTERPRETATION · BY TEMPLE ORACLE</p>
+      </div>
+
+      <div class="asked-q">
+        <b>所問之事</b><span id="result-question">—</span>
+      </div>
+
+      <div class="summary-card" id="summary-card" data-char="吉">
+        <span class="tag">總 解</span>
+        <h3 id="summary-title">—</h3>
+        <p id="summary-text">—</p>
+      </div>
+
+      <div class="interp-tabs">
+        <div class="interp-tab active" data-tab="detail" onclick="switchTab('detail')">分項詳解</div>
+        <div class="interp-tab" data-tab="story" onclick="switchTab('story')">歷史典故</div>
+        <div class="interp-tab" data-tab="plain" onclick="switchTab('plain')">白話翻譯</div>
+      </div>
+
+      <div id="tab-detail">
+        <div class="interp-list" id="interp-list"></div>
+      </div>
+      <div id="tab-story" style="display:none">
+        <div class="plain-text" id="story-text">—</div>
+      </div>
+      <div id="tab-plain" style="display:none">
+        <div class="plain-text" id="plain-text">—</div>
+      </div>
+
+      <div class="result-footer">
+        <div class="icon-btn-sq" onclick="showToast('已收藏此籤 ♥')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/></svg></div>
+        <div class="icon-btn-sq" onclick="shareResult()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg></div>
+        <button class="btn-secondary" style="margin-left:auto" onclick="go('home')">回首頁</button>
+        <button class="btn-primary" onclick="startDraw()">再抽一次</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─── State ───
+  const state = {
+    current: 'home',
+    question: '',
+    stickNum: 0,  // 1..100
+    attemptCount: 0,
+    maxAttempts: 3,
+    poe: null,  // 'sheng' | 'xiao' | 'yin'
+    consecutiveFail: 0
+  };
+
+  // ─── Fortune library (8 sample poems) ───
+  const POEMS = [
+    {
+      num: 7, rank: '中吉', rankEn: 'ZHŌNG JÍ',
+      lines: ['雲開見月分明朗', '病去身安喜氣新', '營謀漸漸皆如意', '好把心田答聖神'],
+      summary: { tag: '吉', char: '吉', title: '雲散月明 · 漸入佳境',
+        text: '此籤喻示困難已過，前景漸明。雖非一步到位，但事事皆循序向上，宜保持感恩之心。'},
+      items: [
+        { cat: '姻緣', desc: '昔日誤會漸釋，舊情有望重續。', v: '吉', k: 'good'},
+        { cat: '事業', desc: '瓶頸化解，工作上將得貴人提拔。', v: '吉', k: 'good'},
+        { cat: '財運', desc: '財氣回穩，不宜冒進投資。', v: '平', k: 'mid'},
+        { cat: '健康', desc: '舊疾將癒，宜飲食清淡、多運動。', v: '吉', k: 'good'},
+      ],
+      story: '典出《唐書》：玄宗朝有一書生久病，忽見雲開月明，病即痊癒。喻示陰霾散去、光明重現之意。',
+      plain: '烏雲散去，月光明亮清朗；疾病遠去，身心恢復安康；謀劃的事情漸漸順利如意，別忘了以感恩之心答謝神明。'
+    },
+    {
+      num: 13, rank: '上吉', rankEn: 'SHÀNG JÍ',
+      lines: ['花開正值艷陽天', '蜂蝶紛紛競採鮮', '好把心田勤培灌', '他年枝葉自成全'],
+      summary: { tag: '大吉', char: '福', title: '花開時運 · 正當其時',
+        text: '當下正是最佳時機，萬物皆應天時而動。唯須勤加耕耘，將來必有大成。'},
+      items: [
+        { cat: '姻緣', desc: '桃花正盛，有緣人就在不遠處。', v: '大吉', k: 'good'},
+        { cat: '事業', desc: '正值發展良機，主動把握必有所成。', v: '大吉', k: 'good'},
+        { cat: '財運', desc: '財源廣進，投資有利可圖。', v: '吉', k: 'good'},
+        { cat: '健康', desc: '精力充沛，身體健朗。', v: '吉', k: 'good'},
+      ],
+      story: '典出宋代《花庵詞選》：一老儒春日見花盛蝶舞，悟人生得意需勤勉，他日方有大業。',
+      plain: '花朵正盛開於明媚的春日，蜂蝶紛紛前來採擷；只要用心耕耘自己的內在花園，未來枝葉必定茂盛豐美。'
+    },
+    {
+      num: 21, rank: '中平', rankEn: 'ZHŌNG PÍNG',
+      lines: ['守舊隨時且待時', '莫貪眼下利多虧', '凡事忍耐宜謹慎', '前路自有貴人來'],
+      summary: { tag: '平', char: '靜', title: '守舊待時 · 靜候時機',
+        text: '此刻不宜冒進，需穩守根本。貪圖當下反受其害，忍耐片時，自有貴人相助。'},
+      items: [
+        { cat: '姻緣', desc: '目前不宜躁進，順其自然較妥。', v: '平', k: 'mid'},
+        { cat: '事業', desc: '守成為上，切勿輕易轉職或擴張。', v: '平', k: 'mid'},
+        { cat: '財運', desc: '保守為宜，避免高風險投資。', v: '平', k: 'mid'},
+        { cat: '健康', desc: '注意作息規律，避免過勞。', v: '平', k: 'mid'},
+      ],
+      story: '典出《戰國策》：韓昭侯守舊制而待時機，終成霸業。喻示靜守待機之智慧。',
+      plain: '暫且守住舊有的一切，等待時機；不要貪圖眼前的小利，以免造成更大損失；凡事忍耐謹慎，前方自然有貴人出現相助。'
+    },
+    {
+      num: 38, rank: '上吉', rankEn: 'SHÀNG JÍ',
+      lines: ['山中有路通平地', '莫愁前路覓知音', '春風吹渡千江水', '花開時節自相逢'],
+      summary: { tag: '吉', char: '吉', title: '良緣將至 · 靜候花開',
+        text: '此籤喻示良緣將至，雖有曲折，終能相逢。保持真誠，不急不躁。春風化雨之時，所求之事將循序而成。'},
+      items: [
+        { cat: '姻緣', desc: '春風化雨將至，耐心等待即能相逢。', v: '大吉', k: 'good'},
+        { cat: '事業', desc: '山路雖曲折但通達，終能有所成就。', v: '吉', k: 'good'},
+        { cat: '財運', desc: '穩健經營，勿躁進，細水長流。', v: '平', k: 'mid'},
+        { cat: '健康', desc: '身心安順，保持作息規律即可。', v: '吉', k: 'good'},
+      ],
+      story: '典出《淮南子》：伯牙與子期高山流水覓知音，喻示真誠之心必遇相知之人。',
+      plain: '山中也有道路可以通往平地；不要憂愁前方找不到知心的人；春風吹過千條江水的時候，花朵盛開之時自然會相逢。'
+    },
+    {
+      num: 46, rank: '中吉', rankEn: 'ZHŌNG JÍ',
+      lines: ['一鶴騰空上九霄', '飛來飛去任逍遙', '若逢貴客相扶助', '萬里前程一路高'],
+      summary: { tag: '吉', char: '騰', title: '鶴翔九霄 · 貴人扶持',
+        text: '展翅高飛之象。若能得貴人相助，前程將一飛沖天。宜主動尋求良師益友。'},
+      items: [
+        { cat: '姻緣', desc: '將遇良緣，對方條件優越。', v: '吉', k: 'good'},
+        { cat: '事業', desc: '有升遷或轉職良機，貴人提拔。', v: '吉', k: 'good'},
+        { cat: '財運', desc: '橫財可得，但勿忘本分。', v: '吉', k: 'good'},
+        { cat: '健康', desc: '活力充沛，適合嘗試新運動。', v: '吉', k: 'good'},
+      ],
+      story: '典出《列仙傳》：王子喬乘白鶴升天，後世喻指平步青雲之吉兆。',
+      plain: '一隻仙鶴騰空飛上九重雲霄；來去自如無拘無束；如果遇到貴人相扶持，萬里的前程將一路高升。'
+    },
+    {
+      num: 52, rank: '下下', rankEn: 'XIÀ XIÀ',
+      lines: ['風雨淒淒暗九霄', '孤舟飄蕩路迢遙', '莫怨天公行不道', '自有明時在後朝'],
+      summary: { tag: '凶', char: '潛', title: '風雨暫歇 · 韜光養晦',
+        text: '目前處於低谷，諸事不宜。然天道循環，今日之困即他日之福，須忍耐守分。'},
+      items: [
+        { cat: '姻緣', desc: '感情有阻礙，需多溝通化解。', v: '凶', k: 'bad'},
+        { cat: '事業', desc: '工作多波折，宜守成不宜躁進。', v: '凶', k: 'bad'},
+        { cat: '財運', desc: '破財之象，切勿借貸或投資。', v: '凶', k: 'bad'},
+        { cat: '健康', desc: '注意舊疾復發，宜多休養。', v: '平', k: 'mid'},
+      ],
+      story: '典出《漢書·蘇武傳》：蘇武北海牧羊十九載，終得回漢。喻示困境終有盡頭。',
+      plain: '風雨淒冷使九重天都顯得陰暗；一葉孤舟飄蕩在遙遠的路上；不要抱怨天道不公平，光明的時節必在日後到來。'
+    },
+    {
+      num: 65, rank: '中吉', rankEn: 'ZHŌNG JÍ',
+      lines: ['明月當空照古今', '分明不用更重尋', '石中取玉須勤琢', '水底撈針須用心'],
+      summary: { tag: '吉', char: '琢', title: '明月當空 · 勤能補拙',
+        text: '答案其實就在眼前，無須遠求。但欲成就非凡之事，仍須勤奮琢磨，不可懈怠。'},
+      items: [
+        { cat: '姻緣', desc: '身邊已有合適人選，別再四處尋覓。', v: '吉', k: 'good'},
+        { cat: '事業', desc: '目前工作有發展空間，宜深耕。', v: '吉', k: 'good'},
+        { cat: '財運', desc: '勤儉持家，積少成多。', v: '平', k: 'mid'},
+        { cat: '健康', desc: '平穩無虞，注重預防保養。', v: '吉', k: 'good'},
+      ],
+      story: '典出《韓非子》：玉人識璞玉於石中，勤琢十年而成傳世之寶。',
+      plain: '明亮的月亮在空中照耀古今；答案清清楚楚不用再去尋找；要從石頭中取出美玉必須勤加雕琢；在水底撈針更需要用心專注。'
+    },
+    {
+      num: 79, rank: '中平', rankEn: 'ZHŌNG PÍNG',
+      lines: ['危灘險灘船易翻', '行船須要穩當安', '若遇順風時借力', '即是平地登高山'],
+      summary: { tag: '平', char: '慎', title: '險中求穩 · 乘時而動',
+        text: '眼下風險猶存，凡事宜穩當謹慎。若遇順境機會，應把握借勢而上，方能化險為夷。'},
+      items: [
+        { cat: '姻緣', desc: '關係微妙，需細心經營。', v: '平', k: 'mid'},
+        { cat: '事業', desc: '轉型階段，穩守優於冒進。', v: '平', k: 'mid'},
+        { cat: '財運', desc: '理財宜保守，待時機成熟再佈局。', v: '平', k: 'mid'},
+        { cat: '健康', desc: '注意意外傷害，避免危險活動。', v: '平', k: 'mid'},
+      ],
+      story: '典出《三國志》：赤壁之戰，周瑜借東風之力以少勝多，喻順勢而為之智。',
+      plain: '危險的淺灘與急流中船隻容易翻覆；行船必須穩當才能平安；如果遇到順風就要借助風力；這樣就能像從平地登上高山一樣順利。'
+    },
+  ];
+
+  // ─── Navigation ───
+  function go(name){
+    const prev = state.current;
+    state.current = name;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById('screen-' + name);
+    if (target) target.classList.add('active');
+
+    // nav dark/light
+    const tn = document.getElementById('topnav');
+    if (name === 'shake' || name === 'poe') tn.classList.add('dark');
+    else tn.classList.remove('dark');
+
+    // active link
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    if (name === 'home') document.getElementById('nav-home').classList.add('active');
+    else if (name === 'detail') document.getElementById('nav-temple').classList.add('active');
+    else if (name === 'form' || name === 'confirm' || name === 'shake' || name === 'poe') document.getElementById('nav-draw').classList.add('active');
+    else if (name === 'result') document.getElementById('nav-poem').classList.add('active');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Screen-specific setup
+    if (name === 'shake') initShake();
+    if (name === 'poe') initPoe();
+    if (name === 'result') initResult();
+  }
+
+  function startDraw(){
+    // Reset question-related state
+    state.question = '';
+    state.stickNum = 0;
+    state.attemptCount = 0;
+    state.consecutiveFail = 0;
+    document.getElementById('question-input').value = '';
+    updateCharCount();
+    go('form');
+  }
+
+  // ─── FORM ───
+  const qInput = document.getElementById('question-input');
+  const charCountEl = document.getElementById('char-count');
+  const nextBtn = document.getElementById('next-btn');
+
+  function updateCharCount(){
+    const len = qInput.value.length;
+    charCountEl.textContent = `${len} / 200`;
+    charCountEl.classList.toggle('warn', len > 180);
+    nextBtn.disabled = qInput.value.trim().length < 4;
+  }
+  qInput.addEventListener('input', updateCharCount);
+
+  function submitQuestion(){
+    const q = qInput.value.trim();
+    if (q.length < 4){ showToast('請詳細描述您想請示之事 ·'); return; }
+    state.question = q;
+    document.getElementById('confirm-question').textContent = q;
+    go('confirm');
+  }
+
+  // ─── SHAKE ───
+  const bucket = document.getElementById('bucket');
+  const stopBtn = document.getElementById('stop-btn');
+  const shakeHint = document.getElementById('shake-hint');
+  const drawnNumEl = document.getElementById('drawn-num');
+  const drawnNumTxt = document.getElementById('drawn-num-txt');
+  const chosenStick = document.getElementById('chosen-stick');
+  const stickTip = document.getElementById('stick-tip');
+
+  function initShake(){
+    // pick a random poem index, store stickNum
+    const poem = POEMS[Math.floor(Math.random() * POEMS.length)];
+    state.stickNum = poem.num;
+    state._currentPoem = poem;
+    // reset visuals
+    bucket.classList.add('shaking');
+    bucket.classList.remove('reveal');
+    chosenStick.classList.remove('show');
+    stopBtn.disabled = false;
+    stopBtn.textContent = 'STOP';
+    shakeHint.textContent = 'TAP TO RECEIVE YOUR FORTUNE';
+    drawnNumEl.classList.remove('show');
+  }
+
+  function stopShake(){
+    stopBtn.disabled = true;
+    bucket.classList.remove('shaking');
+    bucket.classList.add('reveal');
+    const poem = state._currentPoem;
+    stickTip.textContent = `第${numToZh(poem.num)}籤`;
+    setTimeout(() => {
+      chosenStick.classList.add('show');
+      drawnNumTxt.textContent = `第 ${numToZh(poem.num)} 籤`;
+      drawnNumEl.classList.add('show');
+      shakeHint.textContent = 'STICK DRAWN · NOW SEEK THE DEITY\'S APPROVAL';
+      stopBtn.textContent = '擲筊';
+      stopBtn.disabled = false;
+      stopBtn.onclick = () => { stopBtn.onclick = stopShake; go('poe'); };
+    }, 800);
+  }
+
+  // ─── POE ───
+  const poeStones = document.getElementById('poe-stones');
+  const poeTitle = document.getElementById('poe-title');
+  const poeDesc = document.getElementById('poe-desc');
+  const poeActions = document.getElementById('poe-actions');
+  const poeNote = document.getElementById('poe-note');
+  const poeSectionTitle = document.getElementById('poe-section-title');
+  const attemptCounter = document.getElementById('attempt-counter');
+
+  function initPoe(){
+    state.attemptCount++;
+    attemptCounter.textContent = `擲筊 · ${state.attemptCount} / ${state.maxAttempts}`;
+    poeSectionTitle.textContent = '擲 筊 中';
+    poeTitle.textContent = '—';
+    poeDesc.textContent = '神明靜聽 · 擲筊請示中';
+    poeActions.innerHTML = '';
+    poeNote.style.display = 'none';
+    poeStones.className = 'poe-stones-big tossing';
+    // Build stones DOM
+    poeStones.innerHTML = `
+      <div class="stone-flat"></div>
+      <div class="stone-dome"></div>
+      <div class="stone-flat" style="display:none"></div>
+      <div class="stone-dome" style="display:none"></div>
+      <div class="shadow"></div>
+    `;
+    // Show tossing animation ~ 1.4s then reveal
+    setTimeout(revealPoe, 1400);
+  }
+
+  function revealPoe(){
+    // Random result (weighted): first attempt slightly favor sheng if sheng not yet
+    // Simple random: 50% sheng, 25% xiao, 25% yin
+    let result;
+    const r = Math.random();
+    // If we've already failed twice, bump sheng odds
+    const shengOdds = state.consecutiveFail >= 2 ? 0.8 : 0.5;
+    if (r < shengOdds) result = 'sheng';
+    else if (r < shengOdds + 0.25) result = 'xiao';
+    else result = 'yin';
+
+    state.poe = result;
+    poeStones.classList.remove('tossing');
+    poeStones.className = `poe-stones-big poe-result ${result}`;
+
+    // Set stones based on result
+    const stonesHtml = {
+      sheng: `<div class="stone-flat"></div><div class="stone-dome"></div><div class="shadow"></div>`,
+      xiao:  `<div class="stone-flat"></div><div class="stone-flat"></div><div class="shadow"></div>`,
+      yin:   `<div class="stone-dome"></div><div class="stone-dome"></div><div class="shadow"></div>`,
+    }[result];
+    poeStones.innerHTML = stonesHtml;
+
+    poeSectionTitle.textContent = '擲 筊 結 果';
+
+    if (result === 'sheng'){
+      poeTitle.textContent = '聖 筊';
+      poeDesc.innerHTML = '神明應允此籤<br>即將為您揭示籤詩內容';
+      poeActions.innerHTML = `<button class="poe-btn poe-btn-primary" onclick="go('result')">查 看 籤 詩</button>`;
+      state.consecutiveFail = 0;
+    } else if (result === 'xiao'){
+      poeTitle.textContent = '笑 筊';
+      poeDesc.innerHTML = '神明莞爾一笑 · 似有未盡之意<br>需重新抽籤 · 直至聖筊方解此籤';
+      state.consecutiveFail++;
+      poeActions.innerHTML = `
+        <button class="poe-btn poe-btn-primary" onclick="redraw()">重新搖籤</button>
+        <button class="poe-btn poe-btn-secondary" onclick="go('form')">修改問題</button>
+      `;
+      poeNote.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg> 笑筊表示此籤非神明所示 · 需重新搖籤請示`;
+      poeNote.style.display = 'inline-flex';
+    } else {
+      poeTitle.textContent = '沒 筊';
+      poeDesc.innerHTML = '神明不允此籤 · 此非所問之答<br>需重新抽籤 · 直至聖筊方解此籤';
+      state.consecutiveFail++;
+      poeActions.innerHTML = `
+        <button class="poe-btn poe-btn-primary" onclick="redraw()">重新搖籤</button>
+        <button class="poe-btn poe-btn-danger" onclick="go('form')">修改問題</button>
+      `;
+      poeNote.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6m0-6l6 6"/></svg> 沒筊 (又稱陰筊) 表示神明未予應允 · 需重新搖籤`;
+      poeNote.style.display = 'inline-flex';
+    }
+  }
+
+  function redraw(){
+    // Must draw a new stick; reset attempt and fail counters
+    state.attemptCount = 0;
+    state.consecutiveFail = 0;
+    go('shake');
+  }
+
+  // ─── RESULT ───
+  function initResult(){
+    const poem = state._currentPoem;
+    if (!poem) return;
+    document.getElementById('rank-tag').textContent = poem.rank.split('').join(' ');
+    document.getElementById('poem-num-zh').textContent = `第 ${numToZh(poem.num)} 籤`;
+    document.getElementById('poem-num-en').textContent = `No. ${poem.num} · ${poem.rankEn}`;
+    document.getElementById('poem-num-vert').textContent = `第${numToZh(poem.num)}`;
+    document.getElementById('poem-l1').textContent = poem.lines[0];
+    document.getElementById('poem-l2').textContent = poem.lines[1];
+    document.getElementById('poem-l3').textContent = poem.lines[2];
+    document.getElementById('poem-l4').textContent = poem.lines[3];
+    document.getElementById('result-question').textContent = state.question || '（未輸入）';
+
+    // summary color based on rank
+    const sc = document.getElementById('summary-card');
+    sc.dataset.char = poem.summary.char;
+    document.getElementById('summary-title').textContent = poem.summary.title;
+    document.getElementById('summary-text').textContent = poem.summary.text;
+    if (poem.rank.includes('下') || poem.rank.includes('凶')){
+      sc.style.background = 'linear-gradient(135deg, #3a4a5a, #1f2a38)';
+    } else if (poem.rank.includes('平')){
+      sc.style.background = 'linear-gradient(135deg, var(--gold), #7a5e1e)';
+    } else {
+      sc.style.background = 'linear-gradient(135deg, var(--vermilion), var(--vermilion-2))';
+    }
+
+    // interp list
+    const list = document.getElementById('interp-list');
+    list.innerHTML = poem.items.map(it => `
+      <div class="interp-item">
+        <div class="cat">${it.cat.split('').join(' ')}</div>
+        <div class="desc">${it.desc}</div>
+        <div class="verdict ${it.k}">${it.v}</div>
+      </div>
+    `).join('');
+
+    document.getElementById('story-text').textContent = poem.story;
+    document.getElementById('plain-text').textContent = poem.plain;
+
+    // reset tabs
+    switchTab('detail');
+  }
+
+  function switchTab(t){
+    document.querySelectorAll('.interp-tab').forEach(el => el.classList.toggle('active', el.dataset.tab === t));
+    document.getElementById('tab-detail').style.display = t === 'detail' ? 'block' : 'none';
+    document.getElementById('tab-story').style.display = t === 'story' ? 'block' : 'none';
+    document.getElementById('tab-plain').style.display = t === 'plain' ? 'block' : 'none';
+  }
+
+  function shareResult(){
+    const poem = state._currentPoem;
+    const text = `神籤 · 第 ${numToZh(poem.num)} 籤（${poem.rank}）\n${poem.summary.title}\n${poem.lines.join(' · ')}`;
+    if (navigator.clipboard){
+      navigator.clipboard.writeText(text).then(() => showToast('籤詩已複製到剪貼簿 ·'));
+    } else {
+      showToast('分享功能：籤詩已準備');
+    }
+  }
+
+  // ─── Utilities ───
+  function numToZh(n){
+    const digits = ['零','一','二','三','四','五','六','七','八','九'];
+    if (n < 10) return digits[n];
+    if (n < 20) return '十' + (n % 10 ? digits[n % 10] : '');
+    const tens = Math.floor(n / 10);
+    const ones = n % 10;
+    return digits[tens] + '十' + (ones ? digits[ones] : '');
+  }
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // Init
+  updateCharCount();
+</script>
+
+</body>
+</html>
